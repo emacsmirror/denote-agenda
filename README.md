@@ -6,6 +6,8 @@ SPDX-License-Identifier: GFDL-1.3-or-later
 
 # Denote Extras
 
+This repository contains a handful of extra integrations/utilities for [Denote](https://protesilaos.com/emacs/denote).
+
 ## Denote Agenda
 
 This file contains a simple integration between Denote and Org-Agenda.

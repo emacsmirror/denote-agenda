@@ -54,7 +54,7 @@
   :group 'org-agenda)
 
 (defcustom denote-agenda-static-files nil
-  "Files to always include in `org-agenda-files'.
+  "Files to always include in the variable `org-agenda-files'.
 
 See also `denote-agenda-include-regexp' and
 `denote-agenda-include-journal'."
@@ -75,7 +75,7 @@ See also `denote-agenda-static-files'."
   "Whether to include files from `denote-journal-extras'.
 
 When enabled (default is based on the load-time availability of
-`denote-journal-extras'), files which match
+`denote-journal-extras'), files which match the variable
 `denote-journal-extras-keyword', and are on the present day or
 later, will be included.
 
@@ -109,7 +109,7 @@ or `:after').  This is processed by `denote-agenda-insinuate'."
 ;;; General Implementation
 
 (defun denote-agenda-set-agenda-files (&rest _)
-  "Set `org-agenda-files' using denote files.
+  "Set the variable `org-agenda-files' using denote files.
 
 Files always include come from `denote-agenda-static-files', and
 files are dynamically selected using the following variables:

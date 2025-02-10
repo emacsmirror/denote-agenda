@@ -5,7 +5,7 @@
 ;; Author: Samuel W. Flint <swflint@samuelwflint.com>
 ;; SPDX-License-Identifier: GPL-3.0-or-later
 ;; Homepage: https://git.sr.ht/~swflint/denote-extras
-;; Version: 0.0.1
+;; Version: 1.0.0
 ;; Keywords: convenience
 ;; Package-Requires: ((emacs "24.1") (denote "3.1.0"))
 
@@ -41,6 +41,13 @@
 ;; Then, as shown above, in the template, the expansion of
 ;; `%(denote-journal-capture-template)' can be used to prompt
 ;; for (and reuse) the date that was selected as for capturing.
+;;
+;;;; Errors and Patches
+;;
+;; If you find an error, or have a patch to improve this package (or
+;; are able to add additional DOI getters), please send an email to
+;; ~swflint/emacs-utilities@lists.sr.ht.
+
 
 ;;; Code:
 

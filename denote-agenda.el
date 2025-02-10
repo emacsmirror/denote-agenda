@@ -5,7 +5,7 @@
 ;; Author: Samuel W. Flint <swflint@samuelwflint.com>
 ;; SPDX-License-Identifier: GPL-3.0-or-later
 ;; Homepage: https://git.sr.ht/~swflint/denote-extras
-;; Version: 0.0.1
+;; Version: 1.0.0
 ;; Keywords: calendar
 ;; Package-Requires: ((emacs "27.1") (denote "3.1.0"))
 
@@ -38,6 +38,13 @@
 ;; To use this package, load it, configure the above options, and run:
 ;;
 ;;     (denote-agenda-insinuate)
+;;
+;;;; Errors and Patches
+;;
+;; If you find an error, or have a patch to improve this package (or
+;; are able to add additional DOI getters), please send an email to
+;; ~swflint/emacs-utilities@lists.sr.ht.
+
 
 ;;; Code:
 
@@ -52,7 +59,8 @@
 (defgroup denote-agenda ()
   "Denote/Org Agenda integration module."
   :group 'denote
-  :group 'org-agenda)
+  :group 'org-agenda
+  :link '(url-link :tag "Homepage" "https://git.sr.ht/~swflint/denote-extras"))
 
 (defcustom denote-agenda-static-files nil
   "Files to always include in the variable `org-agenda-files'.

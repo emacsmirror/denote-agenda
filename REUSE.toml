@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: Copyright (C) 2025 Samuel W. Flint <swflint@samuelwflint.com>
+#
+# SPDX-License-Identifier: CC0-1.0
+
 version = 1
 SPDX-PackageName = "denote-extras"
 SPDX-PackageSupplier = "Samuel W. Flint <swflint@samuelwflint.com>"

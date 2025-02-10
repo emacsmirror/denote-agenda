@@ -7,7 +7,7 @@
 ;; Homepage: https://git.sr.ht/~swflint/denote-extras
 ;; Version: 0.0.1
 ;; Keywords: calendar
-;; Package-Requires: ((emacs "27.1"))
+;; Package-Requires: ((emacs "27.1") (denote "3.1.0"))
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by

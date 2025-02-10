@@ -43,6 +43,7 @@
 
 (require 'denote)
 (require 'org)
+(require 'cl-lib)
 
 (declare-function denote-journal-extras--keyword-regex "denote-journal-extras" ())
 

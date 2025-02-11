@@ -48,6 +48,7 @@
 ;;; Code:
 
 (require 'denote)
+(require 'iso8601)
 (require 'org)
 (require 'cl-lib)
 

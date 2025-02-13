@@ -5,7 +5,7 @@
 ;; Author: Samuel W. Flint <swflint@samuelwflint.com>
 ;; SPDX-License-Identifier: GPL-3.0-or-later
 ;; Homepage: https://git.sr.ht/~swflint/denote-extras
-;; Version: 1.0.0
+;; Version: 1.0.1
 ;; Keywords: calendar
 ;; Package-Requires: ((emacs "27.1") (denote "3.1.0"))
 
@@ -117,6 +117,11 @@ or `:after').  This is processed by `denote-agenda-insinuate'."
 
 ;;; General Implementation
 
+(defun denote-agenda--regexp-files ()
+  "Collect files based on `denote-agenda-include-regexp'."
+  (when denote-agenda-include-regexp
+    (denote-directory-files denote-agenda-include-regexp nil t)))
+
 (defun denote-agenda-set-agenda-files (&rest _)
   "Set the variable `org-agenda-files' using denote files.
 
@@ -131,8 +136,7 @@ files are dynamically selected using the following variables:
         (cl-remove-if (lambda (file)
                         (not (string-match-p (rx ".org" eol) file)))
                       (append denote-agenda-static-files
-                              (when denote-agenda-include-regexp
-                                (denote-directory-files denote-agenda-include-regexp nil t))
+                              (denote-agenda--regexp-files)
                               (when denote-agenda-include-journal
                                 (let ((today (pcase-let ((`(_ _ _ ,day ,month ,year _ _ _) (decode-time (current-time))))
                                                (encode-time (list 0 0 0 day month year nil -1 nil)))))

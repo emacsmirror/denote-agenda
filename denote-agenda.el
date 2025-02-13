@@ -5,7 +5,7 @@
 ;; Author: Samuel W. Flint <swflint@samuelwflint.com>
 ;; SPDX-License-Identifier: GPL-3.0-or-later
 ;; Homepage: https://git.sr.ht/~swflint/denote-extras
-;; Version: 1.0.1
+;; Version: 1.0.2
 ;; Keywords: calendar
 ;; Package-Requires: ((emacs "27.1") (denote "3.1.0"))
 
@@ -53,6 +53,7 @@
 (require 'cl-lib)
 
 (declare-function denote-journal-extras--keyword-regex "denote-journal-extras" ())
+(declare-function denote-journal-extras-directory "denote-journal-extras" ())
 
 
 ;;; Customization
@@ -122,6 +123,41 @@ or `:after').  This is processed by `denote-agenda-insinuate'."
   (when denote-agenda-include-regexp
     (denote-directory-files denote-agenda-include-regexp nil t)))
 
+(defun denote-agenda--find-journal-files ()
+  "Find candidate journal files to further filter."
+  (when (and denote-agenda-include-journal
+             (featurep 'denote-journal-extras))
+    (let* ((directory-prefix (if (string= (denote-journal-extras-directory)
+                                          (denote-directory))
+                                 nil
+                               (file-relative-name (denote-journal-extras-directory)
+                                                   (denote-directory))))
+           (regexp (if directory-prefix
+                       (rx-to-string `(and ,directory-prefix (* any) (eval (denote-journal-extras--keyword-regex))))
+                     (denote-journal-extras--keyword-regex))))
+      (denote-directory-files regexp nil t))))
+
+(defun denote-agenda--datetime-from-filename (filename)
+  "Get an encoded time from Denote identifier in FILENAME."
+  (encode-time
+   (cl-substitute 0 nil
+                  (iso8601-parse
+                   (denote--id-to-date
+                    (denote-retrieve-filename-identifier filename)))
+                  :count 3)))
+
+(defun denote-agenda--journal-files ()
+  "Collect present and future journal files for the agenda."
+  (when denote-agenda-include-journal
+    (let ((today (pcase-let ((`(_ _ _ ,day ,month ,year _ _ _) (decode-time (current-time))))
+                   (encode-time (list 0 0 0 day month year nil -1 nil)))))
+      (cl-remove-if
+       (lambda (filename)
+         (let ((note-date (denote-agenda--datetime-from-filename filename)))
+           (not (or (time-equal-p today note-date)
+                    (time-less-p today note-date)))))
+       (denote-agenda--find-journal-files)))))
+
 (defun denote-agenda-set-agenda-files (&rest _)
   "Set the variable `org-agenda-files' using denote files.
 
@@ -137,20 +173,7 @@ files are dynamically selected using the following variables:
                         (not (string-match-p (rx ".org" eol) file)))
                       (append denote-agenda-static-files
                               (denote-agenda--regexp-files)
-                              (when denote-agenda-include-journal
-                                (let ((today (pcase-let ((`(_ _ _ ,day ,month ,year _ _ _) (decode-time (current-time))))
-                                               (encode-time (list 0 0 0 day month year nil -1 nil)))))
-                                  (cl-remove-if
-                                   (lambda (filename)
-                                     (let* ((identifier (denote-retrieve-filename-identifier filename))
-                                            (note-date (encode-time
-                                                        (cl-substitute 0 nil
-                                                                       (iso8601-parse
-                                                                        (denote--id-to-date identifier))
-                                                                       :count 3))))
-                                       (not (or (time-equal-p today note-date)
-                                                (time-less-p today note-date)))))
-                                   (denote-directory-files (denote-journal-extras--keyword-regex) nil t))))))))
+                              (denote-agenda--journal-files)))))
 
 
 ;;; Insinuate and Integrate

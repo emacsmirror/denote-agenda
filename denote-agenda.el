@@ -5,7 +5,7 @@
 ;; Author: Samuel W. Flint <swflint@samuelwflint.com>
 ;; SPDX-License-Identifier: GPL-3.0-or-later
 ;; Homepage: https://git.sr.ht/~swflint/denote-extras
-;; Version: 1.0.2
+;; Version: 1.1.0
 ;; Keywords: calendar
 ;; Package-Requires: ((emacs "27.1") (denote "3.1.0"))
 
@@ -35,6 +35,10 @@
 ;; - `denote-agenda-include-journal' Set to t if
 ;;   `denote-journal-extras' files should be included.  If set, only
 ;;   journal entries for the current and future days will be included.
+;; - `denote-agenda-include-journal-limit' Set to nil if all
+;;   current/future journal entries should be included, or a positive
+;;   number specifying how many should be included.
+;;
 ;; To use this package, load it, configure the above options, and run:
 ;;
 ;;     (denote-agenda-insinuate)
@@ -94,6 +98,15 @@ See also `denote-agenda-static-files' and
   :group 'denote-agenda
   :type 'boolean)
 
+(defcustom denote-agenda-include-journal-limit nil
+  "Number of `denote-journal-extras' files to include.
+
+Either nil, for no limit, or a positive number to limit to that
+many files."
+  :group 'denote-agenda
+  :type '(choice (const :tag "No Limit" nil)
+                 (natnum :tag "Limit to N files" :value 7)))
+
 (defcustom denote-agenda-advise-commands
   (append
    '((org-agenda-to-appt . :before)
@@ -149,14 +162,15 @@ or `:after').  This is processed by `denote-agenda-insinuate'."
 (defun denote-agenda--journal-files ()
   "Collect present and future journal files for the agenda."
   (when denote-agenda-include-journal
-    (let ((today (pcase-let ((`(_ _ _ ,day ,month ,year _ _ _) (decode-time (current-time))))
-                   (encode-time (list 0 0 0 day month year nil -1 nil)))))
+    (let* ((today (pcase-let ((`(_ _ _ ,day ,month ,year _ _ _) (decode-time (current-time))))
+                    (encode-time (list 0 0 0 day month year nil -1 nil)))))
       (cl-remove-if
        (lambda (filename)
          (let ((note-date (denote-agenda--datetime-from-filename filename)))
            (not (or (time-equal-p today note-date)
                     (time-less-p today note-date)))))
-       (denote-agenda--find-journal-files)))))
+       (denote-agenda--find-journal-files)
+       :count denote-agenda-include-journal-limit))))
 
 (defun denote-agenda-set-agenda-files (&rest _)
   "Set the variable `org-agenda-files' using denote files.
@@ -167,7 +181,8 @@ files are dynamically selected using the following variables:
  - `denote-agenda-include-regexp', which is passed to
    `denote-directory-files'.
  - If `denote-agenda-include-journal' is non-nil, journal files
-   for the current and future days are included."
+   for the current and future days are included, subject to
+   `denote-agenda-include-journal-limit'."
   (setf org-agenda-files
         (cl-remove-if (lambda (file)
                         (not (string-match-p (rx ".org" eol) file)))

@@ -30,7 +30,7 @@ To use this package, load it, configure the above options, and run:
 This library provides basic integration between `denote-journal-extras` and `org-capture`, providing a function to allow a specific date to be captured to, while saving the date for later editing as part of the capture process.
 
 It may be used as follows.
-For a given capture template with a `file` derived location, the function name `denote-journal-capture-entry-for-date` may be used instead of filename, for example:
+For a given capture template with a `file'`derived location, the functions `denote-journal-capture-entry-for-date` (prompt for a date) or `denote-journal-capture-entry-for-today` (today's entry) may be used instead of filename, for example:
 
 ```elisp
 (setq org-capture-templates '(("a" "Appointment" entry

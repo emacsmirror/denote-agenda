@@ -5,7 +5,7 @@
 ;; Author: Samuel W. Flint <swflint@samuelwflint.com>
 ;; SPDX-License-Identifier: GPL-3.0-or-later
 ;; Homepage: https://git.sr.ht/~swflint/denote-extras
-;; Version: 1.0.0
+;; Version: 1.1.0
 ;; Keywords: convenience
 ;; Package-Requires: ((emacs "24.1") (denote "3.1.0"))
 
@@ -30,9 +30,10 @@
 ;; later editing as part of the capture process.
 ;;
 ;; It may be used as follows.  For a given capture template with a
-;; `file' derived location, the function name
-;; `denote-journal-capture-entry-for-date' may be used instead
-;; of filename, for example:
+;; `file' derived location, the functions
+;; `denote-journal-capture-entry-for-date' (prompt for a date) or
+;; `denote-journal-capture-entry-for-today' (today's entry) may be
+;; used instead of filename, for example:
 ;;
 ;; (setq org-capture-templates '(("a" "Appointment" entry
 ;;                                (file+olp denote-journal-capture-entry-for-date "Appointments")
@@ -60,6 +61,12 @@
 (defun denote-journal-capture-entry-for-date ()
   "Prompt for Denote Journal entry and capture to it."
   (let ((date (denote-date-prompt)))
+    (setf denote-journal-capture-date date)
+    (denote-journal-extras-path-to-new-or-existing-entry date)))
+
+(defun denote-journal-capture-entry-today ()
+  "Capture to Denote Journal entry for today."
+  (let ((date (format-time-string "%Y-%m-%d %H:%M:%S")))
     (setf denote-journal-capture-date date)
     (denote-journal-extras-path-to-new-or-existing-entry date)))
 

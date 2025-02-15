@@ -58,7 +58,7 @@
   "Most recently captured denote journal date.")
 
 (defun denote-journal-capture-entry-for-date ()
-  "Determine a file name for new entries."
+  "Prompt for Denote Journal entry and capture to it."
   (let ((date (denote-date-prompt)))
     (setf denote-journal-capture-date date)
     (denote-journal-extras-path-to-new-or-existing-entry date)))

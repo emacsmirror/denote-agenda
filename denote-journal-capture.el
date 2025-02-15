@@ -51,6 +51,7 @@
 ;;; Code:
 
 (require 'denote)
+(require 'denote-journal-extras)
 (require 'org)
 
 (defvar denote-journal-capture-date nil

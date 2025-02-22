@@ -5,7 +5,7 @@
 ;; Author: Samuel W. Flint <swflint@samuelwflint.com>
 ;; SPDX-License-Identifier: GPL-3.0-or-later
 ;; Homepage: https://git.sr.ht/~swflint/denote-extras
-;; Version: 1.1.0
+;; Version: 1.2.0
 ;; Keywords: calendar
 ;; Package-Requires: ((emacs "27.1") (denote "3.1.0"))
 
@@ -148,7 +148,9 @@ or `:after').  This is processed by `denote-agenda-insinuate'."
            (regexp (if directory-prefix
                        (rx-to-string `(and ,directory-prefix (* any) (eval (denote-journal-extras--keyword-regex))))
                      (denote-journal-extras--keyword-regex))))
-      (denote-directory-files regexp nil t))))
+      (sort
+       (denote-directory-files regexp nil t)
+       #'string<))))
 
 (defun denote-agenda--datetime-from-filename (filename)
   "Get an encoded time from Denote identifier in FILENAME."

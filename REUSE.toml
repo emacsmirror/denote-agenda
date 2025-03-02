@@ -3,9 +3,9 @@
 # SPDX-License-Identifier: CC0-1.0
 
 version = 1
-SPDX-PackageName = "denote-extras"
+SPDX-PackageName = "denote-agenda"
 SPDX-PackageSupplier = "Samuel W. Flint <swflint@samuelwflint.com>"
-SPDX-PackageDownloadLocation = "https://git.sr.ht/~swflint/denote-extras"
+SPDX-PackageDownloadLocation = "https://git.sr.ht/~swflint/denote-agenda"
 
 [[annotations]]
 path = "*.el"

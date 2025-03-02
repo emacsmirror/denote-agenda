@@ -4,7 +4,7 @@ SPDX-FileCopyrightText: Copyright (C) 2025 Samuel W. Flint <swflint@samuelwflint
 SPDX-License-Identifier: GFDL-1.3-or-later
 -->
 
-# Denote Agenda [![Not Yet on MELPA](https://melpa.org/packages/denote-agenda.svg)](https://melpa.org/#/denote-agenda) [![REUSE status](https://api.reuse.software/badge/git.sr.ht/~swflint/denote-agenda)](https://api.reuse.software/info/git.sr.ht/~swflint/denote-agenda)
+# Denote Agenda [![Not Yet on MELPA](https://melpa.org/packages/denote-agenda-badge.svg)](https://melpa.org/#/denote-agenda) [![REUSE status](https://api.reuse.software/badge/git.sr.ht/~swflint/denote-agenda)](https://api.reuse.software/info/git.sr.ht/~swflint/denote-agenda)
 
 This file contains a simple integration between Denote and Org-Agenda.
 It is aware of `denote-journal-extras`, and provides three configuration options.

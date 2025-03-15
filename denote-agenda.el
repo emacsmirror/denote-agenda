@@ -5,7 +5,7 @@
 ;; Author: Samuel W. Flint <swflint@samuelwflint.com>
 ;; SPDX-License-Identifier: GPL-3.0-or-later
 ;; Homepage: https://git.sr.ht/~swflint/denote-extras
-;; Version: 1.2.0
+;; Version: 1.3.0
 ;; Keywords: calendar
 ;; Package-Requires: ((emacs "27.1") (denote "3.1.0"))
 
@@ -25,7 +25,7 @@
 ;;; Commentary:
 
 ;; This file contains a simple integration between Denote and
-;; Org-Agenda.  It is aware of `denote-journal-extras', and provides
+;; Org-Agenda.  It is aware of `denote-journal', and provides
 ;; three configuration options.
 ;;
 ;; - `denote-agenda-static-files' A list of files which should always
@@ -33,7 +33,7 @@
 ;; - `denote-agenda-include-regexp' A regexp to determine files which
 ;;   should be included on the fly.
 ;; - `denote-agenda-include-journal' Set to t if
-;;   `denote-journal-extras' files should be included.  If set, only
+;;   `denote-journal' files should be included.  If set, only
 ;;   journal entries for the current and future days will be included.
 ;; - `denote-agenda-include-journal-limit' Set to nil if all
 ;;   current/future journal entries should be included, or a positive
@@ -56,8 +56,8 @@
 (require 'org)
 (require 'cl-lib)
 
-(declare-function denote-journal-extras--keyword-regex "denote-journal-extras" ())
-(declare-function denote-journal-extras-directory "denote-journal-extras" ())
+(declare-function denote-journal--keyword-regex "denote-journal" ())
+(declare-function denote-journal-directory "denote-journal" ())
 
 
 ;;; Customization
@@ -85,12 +85,12 @@ See also `denote-agenda-static-files'."
   :group 'denote-agenda
   :type 'regexp)
 
-(defcustom denote-agenda-include-journal (featurep 'denote-journal-extras)
-  "Whether to include files from `denote-journal-extras'.
+(defcustom denote-agenda-include-journal (featurep 'denote-journal)
+  "Whether to include files from `denote-journal'.
 
 When enabled (default is based on the load-time availability of
-`denote-journal-extras'), files which match the variable
-`denote-journal-extras-keyword', and are on the present day or
+`denote-journal'), files which match the variable
+`denote-journal-keyword', and are on the present day or
 later, will be included.
 
 See also `denote-agenda-static-files' and
@@ -99,7 +99,7 @@ See also `denote-agenda-static-files' and
   :type 'boolean)
 
 (defcustom denote-agenda-include-journal-limit nil
-  "Number of `denote-journal-extras' files to include.
+  "Number of `denote-journal' files to include.
 
 Either nil, for no limit, or a positive number to limit to that
 many files."
@@ -139,15 +139,15 @@ or `:after').  This is processed by `denote-agenda-insinuate'."
 (defun denote-agenda--find-journal-files ()
   "Find candidate journal files to further filter."
   (when (and denote-agenda-include-journal
-             (featurep 'denote-journal-extras))
-    (let* ((directory-prefix (if (string= (denote-journal-extras-directory)
+             (featurep 'denote-journal))
+    (let* ((directory-prefix (if (string= (denote-journal-directory)
                                           (denote-directory))
                                  nil
-                               (file-relative-name (denote-journal-extras-directory)
+                               (file-relative-name (denote-journal-directory)
                                                    (denote-directory))))
            (regexp (if directory-prefix
-                       (rx-to-string `(and ,directory-prefix (* any) (eval (denote-journal-extras--keyword-regex))))
-                     (denote-journal-extras--keyword-regex))))
+                       (rx-to-string `(and ,directory-prefix (* any) (eval (denote-journal--keyword-regex))))
+                     (denote-journal--keyword-regex))))
       (sort
        (denote-directory-files regexp nil t)
        #'string<))))

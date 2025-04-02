@@ -5,9 +5,9 @@
 ;; Author: Samuel W. Flint <swflint@samuelwflint.com>
 ;; SPDX-License-Identifier: GPL-3.0-or-later
 ;; Homepage: https://git.sr.ht/~swflint/denote-extras
-;; Version: 1.3.0
+;; Version: 1.4.0
 ;; Keywords: calendar
-;; Package-Requires: ((emacs "27.1") (denote "3.1.0"))
+;; Package-Requires: ((emacs "27.1") (denote "3.1.0") (seq "2.24"))
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -165,14 +165,17 @@ or `:after').  This is processed by `denote-agenda-insinuate'."
   "Collect present and future journal files for the agenda."
   (when denote-agenda-include-journal
     (let* ((today (pcase-let ((`(_ _ _ ,day ,month ,year _ _ _) (decode-time (current-time))))
-                    (encode-time (list 0 0 0 day month year nil -1 nil)))))
-      (cl-remove-if
-       (lambda (filename)
-         (let ((note-date (denote-agenda--datetime-from-filename filename)))
-           (not (or (time-equal-p today note-date)
-                    (time-less-p today note-date)))))
-       (denote-agenda--find-journal-files)
-       :count denote-agenda-include-journal-limit))))
+                    (encode-time (list 0 0 0 day month year nil -1 nil))))
+           (candidates
+            (cl-remove-if
+             (lambda (filename)
+               (let ((note-date (denote-agenda--datetime-from-filename filename)))
+                 (not (or (time-equal-p today note-date)
+                          (time-less-p today note-date)))))
+             (denote-agenda--find-journal-files))))
+      (if denote-agenda-include-journal-limit
+          (seq-take candidates denote-agenda-include-journal-limit)
+        candidates))))
 
 (defun denote-agenda-set-agenda-files (&rest _)
   "Set the variable `org-agenda-files' using denote files.

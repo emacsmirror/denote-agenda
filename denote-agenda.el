@@ -4,7 +4,7 @@
 
 ;; Author: Samuel W. Flint <swflint@samuelwflint.com>
 ;; SPDX-License-Identifier: GPL-3.0-or-later
-;; Homepage: https://git.sr.ht/~swflint/denote-extras
+;; Homepage: https://git.sr.ht/~swflint/denote-agenda
 ;; Version: 1.4.0
 ;; Keywords: calendar
 ;; Package-Requires: ((emacs "27.1") (denote "3.1.0") (seq "2.24"))

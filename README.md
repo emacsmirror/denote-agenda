@@ -11,6 +11,8 @@ It is aware of `denote-journal-extras`, and provides three configuration options
 
  - `denote-agenda-static-files` A list of files which should always be included.
  - `denote-agenda-include-regexp` A regexp to determine files which should be included on the fly.
+ - `denote-agenda-include-not-regexp` A regexp to filter files matched by `denote-agenda-include-regexp`.
+ In particular, files which match this will be *removed*.
  - `denote-agenda-include-journal` Set to t if `denote-journal-extras` files should be included.
    If set, only journal entries for the current and future days will be included.
 - `denote-agenda-include-journal-limit` Set to nil if all current/future journal entries should be included, or a positive number specifying how many should be included.

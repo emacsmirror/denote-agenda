@@ -5,7 +5,7 @@
 ;; Author: Samuel W. Flint <swflint@samuelwflint.com>
 ;; SPDX-License-Identifier: GPL-3.0-or-later
 ;; Homepage: https://git.sr.ht/~swflint/denote-agenda
-;; Version: 1.5.0
+;; Version: 2.0.0
 ;; Keywords: calendar
 ;; Package-Requires: ((emacs "27.1") (denote "3.1.0") (seq "2.24"))
 
@@ -32,7 +32,7 @@
 ;;   be included.
 ;; - `denote-agenda-include-regexp' A regexp to determine files which
 ;;   should be included on the fly.
-;; - `denote-agenda-include-not-regexp' A regexp to filter files
+;; - `denote-agenda-exclude-regexp' A regexp to filter files
 ;;   matched by `denote-agenda-include-regexp'.  In particular, files
 ;;   which match this will be /removed/.
 ;; - `denote-agenda-include-journal' Set to t if
@@ -88,7 +88,7 @@ See also `denote-agenda-static-files'."
   :group 'denote-agenda
   :type 'regexp)
 
-(defcustom denote-agenda-include-not-regexp nil
+(defcustom denote-agenda-exclude-regexp nil
   "Regular expressions to filter otherwise included files.
 
 Note, this will *not* be used on journal files or the static files.
@@ -97,6 +97,7 @@ See also `denote-agenda-include-regexp' and
 `denote-agenda-static-files'."
   :group 'denote-agenda
   :type 'regexp)
+(define-obsolete-variable-alias 'denote-agenda-not-include-regexp 'denote-agenda-exclude-regexp "")
 
 (defcustom denote-agenda-include-journal (featurep 'denote-journal)
   "Whether to include files from `denote-journal'.
@@ -149,12 +150,12 @@ or `:after').  This is processed by `denote-agenda-insinuate'."
 
 In particular, it collects files which match
 `denote-agenda-include-regexp', then removes files which match
-`denote-agenda-include-not-regexp'."
+`denote-agenda-exclude-regexp'."
   (let ((files(when denote-agenda-include-regexp
                 (denote-directory-files denote-agenda-include-regexp nil t))))
-    (if denote-agenda-include-not-regexp
+    (if denote-agenda-exclude-regexp
         (cl-remove-if (apply-partially #'string-match-p
-                                       denote-agenda-include-not-regexp)
+                                       denote-agenda-exclude-regexp)
                       files)
       files)))
 

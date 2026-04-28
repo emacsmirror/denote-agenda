@@ -7,7 +7,7 @@ SPDX-License-Identifier: GFDL-1.3-or-later
 # Denote Agenda [![Not Yet on MELPA](https://melpa.org/packages/denote-agenda-badge.svg)](https://melpa.org/#/denote-agenda) [![REUSE status](https://api.reuse.software/badge/git.sr.ht/~swflint/denote-agenda)](https://api.reuse.software/info/git.sr.ht/~swflint/denote-agenda)
 
 This file contains a simple integration between Denote and Org-Agenda.
-It is aware of `denote-journal-extras`, and provides three configuration options.
+It is aware of `denote-journal`, and provides three configuration options.
 
  - `denote-agenda-static-files` A list of files which should always be included.
  - `denote-agenda-include-regexp` A regexp to determine files which should be included on the fly.
